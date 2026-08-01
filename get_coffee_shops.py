@@ -33,7 +33,13 @@ if __name__ == "__main__":
 
     # Subset data to necessary columns only and coffee shops
     coffee_shops = businesses.copy()
-    coffee_shops = coffee_shops[['name', 'cuisine', 'addr:housenumber', 'addr:street', 'addr:city', 'addr:postcode', 'geometry']]
+    coffee_shops = coffee_shops[['name', 
+                                 'cuisine', 
+                                 'addr:housenumber', 
+                                 'addr:street', 
+                                 'addr:city', 
+                                 'addr:postcode', 
+                                 'geometry']]
     coffee_shops = coffee_shops[coffee_shops['cuisine'] == 'coffee_shop']
 
     # ------------------------------------------------------------------------
