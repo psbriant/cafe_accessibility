@@ -3,12 +3,17 @@ Description:
 Pull location data from open street maps for coffee shops in Seattle. 
 """
 
+import logging
+
 import numpy as np
 import osmnx as ox
 import pandas as pd
 
 
 if __name__ == "__main__":
+
+    logging.basicConfig(format='%(asctime)s - %(message)s',
+                        level=logging.INFO)
 
     # ------------------------------------------------------------------------
     # ---INITIALIZE CONSTANT ARGUMENTS----------------------------------------
@@ -22,6 +27,7 @@ if __name__ == "__main__":
     # ------------------------------------------------------------------------
 
     # Pull location data for Seattle coffeeshops from Open Street Maps
+    logging.info("Pulling data from OSM")
     place = "Seattle, United States"
     aoi = ox.geocoder.geocode_to_gdf(place)
     tags = {"cuisine": True}
@@ -32,6 +38,8 @@ if __name__ == "__main__":
     # ------------------------------------------------------------------------
 
     # Subset data to necessary columns only and coffee shops
+    logging.info("Cleaning up data")
+
     coffee_shops = businesses.copy()
     coffee_shops = coffee_shops[['name', 
                                  'cuisine', 
@@ -45,7 +53,9 @@ if __name__ == "__main__":
     # ------------------------------------------------------------------------
     # ---OUTPUT DATA----------------------------------------------------------
     # ------------------------------------------------------------------------
-
+    
+    logging.info("Outputting data") 
+    
     output_file = f'{main_path}coffee_shops.csv'
 
     coffee_shops.to_csv(output_file)
