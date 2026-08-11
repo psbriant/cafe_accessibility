@@ -27,6 +27,7 @@ if __name__ == "__main__":
     # Read in bus stop location data from King County Metro
     # ------------------------------------------------------------------------
     
+    logging.info("Reading in data")
     bus_stops = pd.read_csv(f'{main_path}king_county_bus_stop_data.csv')
 
     bus_stops = bus_stops[['STOP_ID', 
@@ -44,6 +45,8 @@ if __name__ == "__main__":
     # ---PREP DATA------------------------------------------------------------
     # ------------------------------------------------------------------------
     
+    logging.info("Cleaning data")
+
     # Clean up data:
     # 1). Remove stops that are Inactive (INA) Closed (CLO) or PLN
     bus_stops = bus_stops[bus_stops['STOP_STATUS'] == 'ACT']
@@ -52,6 +55,8 @@ if __name__ == "__main__":
     # 3). Filter for Seattle zipcodes
     bus_stops = bus_stops[
         (bus_stops["ZIPCODE"] >= 98101) & (bus_stops["ZIPCODE"] <= 98199)]
+
+    logging.info("Filtering stop owners")
 
     # Filter for stop owners that are within Seattle city limits
     bus_stops = bus_stops[bus_stops["AUTH_NAME"].isin([
@@ -68,7 +73,8 @@ if __name__ == "__main__":
     # ------------------------------------------------------------------------
     # ---OUTPUT DATA----------------------------------------------------------
     # ------------------------------------------------------------------------
-
+    
+    logging.info("Writing data to disk")
     output_file = f'{main_path}kcm_bus_stops_cleaned.csv'
 
     bus_stops = bus_stops.reset_index(drop=True)
