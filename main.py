@@ -10,13 +10,14 @@ Input files:
 Output:
   - coffee_and_bus_map.html
 """
- 
+
+import logging 
 import re
 
-import pandas as pd
-import geopandas as gpd
 import folium
 from folium.plugins import MarkerCluster
+import geopandas as gpd
+import pandas as pd
 from pyproj import Transformer
 
 BUS_STOPS_CSV = "kcm_bus_stops_cleaned.csv"
