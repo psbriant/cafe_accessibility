@@ -1,14 +1,21 @@
 """
+Description: 
+
 Build an interactive Folium map showing King County Metro bus stops,
 Seattle coffee shops, and Metro transit routes.
  
-Input files:
-  - kcm_bus_stops_cleaned.csv  (coordinates in WA State Plane North, EPSG:2285, feet)
-  - coffee_shops.csv           (coordinates as WKT "POINT (lon lat)" in EPSG:4326)
-  - Transit_Routes.shp (+ .shx/.dbf/.prj/.cpg)  (line geometries, WA State Plane North, feet)
+Input datasets:
+
+1). King county metro bus stops for Seattle (coordinates in WA State Plane 
+    North, EPSG:2285, feet)
+2). Seattle coffee shops from open street maps (coordinates as WKT "POINT 
+    (lon lat)" in EPSG:4326)
+3). King County Metro bus routes, (.shx/.dbf/.prj/.cpg, line geometries, WA 
+    State Plane North, feet)
  
-Output:
-  - coffee_and_bus_map.html
+Outputs:
+
+1). coffee_and_bus_map.html
 """
 
 import logging 
