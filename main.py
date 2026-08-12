@@ -28,9 +28,29 @@ import pandas as pd
 from pyproj import Transformer
 
 
-def parse_point(wkt):
+def parse_point(wkt: str) -> tuple:
     """
+    Parses open street maps geographic coordinate data so that it can be used 
+    with King county metro bus stop and bus route geographic data which both 
+    use the Washington State Plane North. 
 
+    The open streetmap data is in both point data and polygon data. This 
+    function converts the polygon data into point data. 
+
+    Arguments:
+        wkt (str): Coordinates in the Well Known Text (WKT) formate. More 
+            information at https://www.ogc.org/standards/wkt-crs/
+
+    Returns:
+        Returns a tuple of coordinate pairs (lat and long):
+
+            1). If point geometry: returns the lat and long
+            2). If polygon geometry: returns the average of the polygon lat 
+                and longs.
+            3). If neither: returns none for both lat and long.
+       
+    Raises:
+        None
     """
 
     wkt = str(wkt)
