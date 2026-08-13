@@ -93,6 +93,7 @@ if __name__ == "__main__":
     # ------------------------------------------------------------------------
 
     # Load bus stops and reproject from WA State Plane North (feet) to lat/lon
+    logging.info("Loading bus stop data")
     bus_df = pd.read_csv(BUS_STOPS_CSV)
     
     transformer = Transformer.from_crs(
@@ -108,6 +109,7 @@ if __name__ == "__main__":
     bus_df["lon"] = lon
  
     # Load coffee shops and parse the WKT "POINT (lon lat)" geometry column
+    logging.info("Loading coffee shop data")
     coffee_df = pd.read_csv(COFFEE_SHOPS_CSV)
  
     coffee_df[["lat", "lon"]] = coffee_df["geometry"].apply(
@@ -116,6 +118,7 @@ if __name__ == "__main__":
     coffee_df = coffee_df.dropna(subset=["lat", "lon"])
  
     # Load transit routes shapefile and reproject to WGS84 lat/lon
+    logging.info("Loading King County Metro bus routes from shapefile")
     routes_gdf = gpd.read_file(TRANSIT_ROUTES_SHP)
     routes_gdf = routes_gdf.to_crs(epsg=4326)
  
@@ -123,6 +126,8 @@ if __name__ == "__main__":
     # ---BUILD THE MAP--------------------------------------------------------
     # ------------------------------------------------------------------------
     
+    logging.info("Building the map")
+
     # Center the map on Seattle
     center_lat = coffee_df["lat"].mean()
     center_lon = coffee_df["lon"].mean()
@@ -136,6 +141,8 @@ if __name__ == "__main__":
     # ---ADD BUS STOPS--------------------------------------------------------
     # ------------------------------------------------------------------------
     
+    logging.info("Creating bus stop layer")
+
     # Bus stops layer (clustered, since there are ~2,700 of them)
     bus_layer = folium.FeatureGroup(name=f"Bus Stops ({len(bus_df)})")
     bus_cluster = MarkerCluster().add_to(bus_layer)
@@ -164,6 +171,8 @@ if __name__ == "__main__":
     # ---ADD COFFEE SHOPS-----------------------------------------------------
     # ------------------------------------------------------------------------
     
+    logging.info("Creating coffee shop layer")
+
     coffee_layer = folium.FeatureGroup(name=f"Coffee Shops ({len(coffee_df)})")
     
     for _, row in coffee_df.iterrows():
@@ -186,6 +195,8 @@ if __name__ == "__main__":
     # ---ADD TRANSIT ROUTES---------------------------------------------------
     # ------------------------------------------------------------------------
     
+    logging.info("Creating transit routes layer")
+
     routes_layer = folium.FeatureGroup(
         name=f"Transit Routes ({len(routes_gdf)})")
     
@@ -218,13 +229,17 @@ if __name__ == "__main__":
     # ---ADD LAYER CONTROL----------------------------------------------------
     # ------------------------------------------------------------------------
     
+    logging.info("Adding layer control")
+
     # Layer control to toggle each dataset on/off
     folium.LayerControl(collapsed=False).add_to(m)
 
     # ------------------------------------------------------------------------
     # ---OUTPUT MAP-----------------------------------------------------------
     # ------------------------------------------------------------------------
-
+    
+    logging.info("Outputting map")
+    
     m.save(OUTPUT_HTML)
     print(f"Map saved to {OUTPUT_HTML}")
     print(f"Bus stops plotted: {len(bus_df)}")
