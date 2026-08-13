@@ -1,0 +1,9 @@
+name: cafe_accessibility
+dependencies:
+  - folium
+  - geopandas
+  - ipython
+  - osmnx
+  - pandas
+  - pyproj
+  
