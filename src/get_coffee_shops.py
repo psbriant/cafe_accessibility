@@ -1,5 +1,6 @@
 """
-Description: 
+Description:
+
 Pull location data from open street maps for coffee shops in Seattle. 
 """
 
