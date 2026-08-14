@@ -196,7 +196,7 @@ if __name__ == "__main__":
     logging.info("Outputting map")
     
     m.save(OUTPUT_HTML)
-    print(f"Map saved to {OUTPUT_HTML}")
-    print(f"Bus stops plotted: {len(bus_df)}")
-    print(f"Coffee shops plotted: {len(coffee_df)}")
-    print(f"Transit routes plotted: {len(routes_gdf)}")
+    logging.info(f"Map saved to {OUTPUT_HTML}")
+    logging.info(f"Bus stops plotted: {len(bus_df)}")
+    logging.info(f"Coffee shops plotted: {len(coffee_df)}")
+    logging.info(f"Transit routes plotted: {len(routes_gdf)}")
