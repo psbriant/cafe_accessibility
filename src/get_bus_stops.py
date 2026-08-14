@@ -1,5 +1,6 @@
 """
-Description: 
+Description:
+ 
 Pull geographic metadata for King County Metro bus stops for Seattle from the 
 King County GIS Center.
 """
