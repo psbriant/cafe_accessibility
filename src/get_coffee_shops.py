@@ -10,18 +10,13 @@ import numpy as np
 import osmnx as ox
 import pandas as pd
 
+import constants as cts
+
 
 if __name__ == "__main__":
 
     logging.basicConfig(format='%(asctime)s - %(message)s',
                         level=logging.INFO)
-
-    # ------------------------------------------------------------------------
-    # ---INITIALIZE CONSTANT ARGUMENTS----------------------------------------
-    # ------------------------------------------------------------------------
-    
-    # Global path variables
-    main_path = "/Users/paul_briant/Documents/coding_projects/data/cafe_accessibility/"
 
     # ------------------------------------------------------------------------
     # ---PULL DATA------------------------------------------------------------
@@ -57,6 +52,6 @@ if __name__ == "__main__":
     
     logging.info("Outputting data") 
     
-    output_file = f'{main_path}coffee_shops.csv'
+    output_file = cts.COFFEE_SHOPS_CSV
 
     coffee_shops.to_csv(output_file)

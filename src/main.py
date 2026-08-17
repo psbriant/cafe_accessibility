@@ -27,6 +27,7 @@ import pandas as pd
 from pyproj import Transformer
 
 from coordinate_utils import parse_point
+import constants as cts
 
 
 if __name__ == "__main__":
@@ -35,21 +36,12 @@ if __name__ == "__main__":
                         level=logging.INFO)
 
     # ------------------------------------------------------------------------
-    # ---INITIALIZE CONSTANT ARGUMENTS----------------------------------------
-    # ------------------------------------------------------------------------
-    
-    BUS_STOPS_CSV = "kcm_bus_stops_cleaned.csv"
-    COFFEE_SHOPS_CSV = "coffee_shops.csv"
-    TRANSIT_ROUTES_SHP = "Transit_Routes.shp"
-    OUTPUT_HTML = "coffee_and_bus_map.html"
-
-    # ------------------------------------------------------------------------
     # ---LOAD DATA------------------------------------------------------------
     # ------------------------------------------------------------------------
 
     # Load bus stops and reproject from WA State Plane North (feet) to lat/lon
     logging.info("Loading bus stop data")
-    bus_df = pd.read_csv(BUS_STOPS_CSV)
+    bus_df = pd.read_csv(cts.BUS_STOPS_CSV)
     
     transformer = Transformer.from_crs(
         "EPSG:2285", 
@@ -65,7 +57,7 @@ if __name__ == "__main__":
  
     # Load coffee shops and parse the WKT "POINT (lon lat)" geometry column
     logging.info("Loading coffee shop data")
-    coffee_df = pd.read_csv(COFFEE_SHOPS_CSV)
+    coffee_df = pd.read_csv(cts.COFFEE_SHOPS_CSV)
  
     coffee_df[["lat", "lon"]] = coffee_df["geometry"].apply(
         lambda g: pd.Series(parse_point(g))
@@ -74,7 +66,7 @@ if __name__ == "__main__":
  
     # Load transit routes shapefile and reproject to WGS84 lat/lon
     logging.info("Loading King County Metro bus routes from shapefile")
-    routes_gdf = gpd.read_file(TRANSIT_ROUTES_SHP)
+    routes_gdf = gpd.read_file(cts.TRANSIT_ROUTES_SHP)
     routes_gdf = routes_gdf.to_crs(epsg=4326)
  
     # ------------------------------------------------------------------------
@@ -195,8 +187,8 @@ if __name__ == "__main__":
     
     logging.info("Outputting map")
     
-    m.save(OUTPUT_HTML)
-    logging.info(f"Map saved to {OUTPUT_HTML}")
+    m.save(cts.OUTPUT_HTML)
+    logging.info(f"Map saved to {cts.OUTPUT_HTML}")
     logging.info(f"Bus stops plotted: {len(bus_df)}")
     logging.info(f"Coffee shops plotted: {len(coffee_df)}")
     logging.info(f"Transit routes plotted: {len(routes_gdf)}")

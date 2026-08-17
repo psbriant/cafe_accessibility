@@ -1,6 +1,6 @@
 """
 Description:
- 
+
 Pull geographic metadata for King County Metro bus stops for Seattle from the 
 King County GIS Center.
 """
@@ -11,6 +11,8 @@ import os
 import numpy as np
 import pandas as pd
 
+import constants as cts
+
 
 if __name__ == "__main__":
 
@@ -18,18 +20,12 @@ if __name__ == "__main__":
                         level=logging.INFO)
 
     # ------------------------------------------------------------------------
-    # ---INITIALIZE CONSTANT ARGUMENTS----------------------------------------
-    # ------------------------------------------------------------------------
-    
-    main_path = "/Users/paul_briant/Documents/coding_projects/data/cafe_accessibility/"
-
-    # ------------------------------------------------------------------------
     # ---GET DATA-------------------------------------------------------------
     # Read in bus stop location data from King County Metro
     # ------------------------------------------------------------------------
     
     logging.info("Reading in data")
-    bus_stops = pd.read_csv(f'{main_path}king_county_bus_stop_data.csv')
+    bus_stops = pd.read_csv(cts.BUS_STOPS_RAW_CSV)
 
     bus_stops = bus_stops[['STOP_ID', 
                            'STOP_STATUS', 
@@ -76,7 +72,7 @@ if __name__ == "__main__":
     # ------------------------------------------------------------------------
     
     logging.info("Writing data to disk")
-    output_file = f'{main_path}kcm_bus_stops_cleaned.csv'
+    output_file = cts.BUS_STOPS_CLEANED_CSV
 
     bus_stops = bus_stops.reset_index(drop=True)
     bus_stops.to_csv(output_file, index=False)
