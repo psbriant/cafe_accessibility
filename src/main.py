@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
     # Bus stops layer (clustered, since there are ~2,700 of them)
     bus_layer = folium.FeatureGroup(name=f"Bus Stops ({len(bus_df)})")
-    bus_cluster = MarkerCluster().add_to(bus_layer)
+    
     
     for _, row in bus_df.iterrows():
         popup_html = (
