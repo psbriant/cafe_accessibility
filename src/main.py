@@ -28,7 +28,6 @@ import geopandas as gpd
 import pandas as pd
 from pyproj import Transformer
 
-from coordinate_utils import parse_point
 import constants as cts
 
 
