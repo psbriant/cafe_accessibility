@@ -224,4 +224,5 @@ if __name__ == "__main__":
     logging.info(f"Map saved to {cts.OUTPUT_HTML}")
     logging.info(f"Bus stops plotted: {len(bus_df)}")
     logging.info(f"Coffee shops plotted: {len(coffee_df)}")
+    logging.info(f"Coffee shop isochrones plotted: {len(isochrone_data)}")
     logging.info(f"Transit routes plotted: {len(routes_gdf)}")
