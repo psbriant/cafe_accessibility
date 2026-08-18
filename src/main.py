@@ -6,11 +6,12 @@ Seattle coffee shops, and Metro transit routes.
  
 Input datasets:
 
-1). King county metro bus stops for Seattle (coordinates in WA State Plane 
+1). King county metro bus stops for Seattle (coordinates in WA State Plane
     North, EPSG:2285, feet)
-2). Seattle coffee shops from open street maps (coordinates as WKT "POINT 
-    (lon lat)" in EPSG:4326)
-3). King County Metro bus routes, (.shx/.dbf/.prj/.cpg, line geometries, WA 
+2). Seattle coffee shops and their walking isochrones (isochrome_cafe_data.
+    json, geocoded coordinates and isochrone polygons from the Mapbox
+    Isochrone API, EPSG:4326)
+3). King County Metro bus routes, (.shx/.dbf/.prj/.cpg, line geometries, WA
     State Plane North, feet)
  
 Outputs:
