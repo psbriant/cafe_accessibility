@@ -158,10 +158,8 @@ if __name__ == "__main__":
     coffee_layer = folium.FeatureGroup(name=f"Coffee Shops ({len(coffee_df)})")
     
     for _, row in coffee_df.iterrows():
-        address = f"{row.get('addr:housenumber', '')} {row.get('addr:street', '')}".strip()
         popup_html = (
             f"<b>{row['name']}</b><br>"
-            f"{address}<br>"
             f"{row.get('addr:city', '')}, {row.get('addr:postcode', '')}"
         )
         folium.Marker(
