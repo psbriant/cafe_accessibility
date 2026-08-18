@@ -56,15 +56,22 @@ if __name__ == "__main__":
     bus_df["lat"] = lat
     bus_df["lon"] = lon
  
-    # Load coffee shops and parse the WKT "POINT (lon lat)" geometry column
-    logging.info("Loading coffee shop data")
-    coffee_df = pd.read_csv(cts.COFFEE_SHOPS_CSV)
- 
-    coffee_df[["lat", "lon"]] = coffee_df["geometry"].apply(
-        lambda g: pd.Series(parse_point(g))
-    )
-    coffee_df = coffee_df.dropna(subset=["lat", "lon"])
- 
+    # Load coffee shops and their walking isochrones
+    logging.info("Loading coffee shop and isochrone data")
+    with open(cts.ISOCHROME_DATA) as f:
+        isochrone_data = json.load(f)
+
+    coffee_df = pd.DataFrame([
+        {
+            "name": name,
+            "addr:city": entry["address_metadata"].get("addr_city", ""),
+            "addr:postcode": entry["address_metadata"].get("addr_postcode", ""),
+            "lat": entry["address_metadata"]["lat"],
+            "lon": entry["address_metadata"]["lon"],
+        }
+        for name, entry in isochrone_data.items()
+    ])
+
     # Load transit routes shapefile and reproject to WGS84 lat/lon
     logging.info("Loading King County Metro bus routes from shapefile")
     routes_gdf = gpd.read_file(cts.TRANSIT_ROUTES_SHP)
