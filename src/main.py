@@ -19,7 +19,8 @@ Outputs:
 1). coffee_and_bus_map.html
 """
 
-import logging 
+import json
+import logging
 
 import folium
 from folium.plugins import MarkerCluster
