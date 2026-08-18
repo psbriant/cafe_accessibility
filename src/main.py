@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     # Load bus stops and reproject from WA State Plane North (feet) to lat/lon
     logging.info("Loading bus stop data")
-    bus_df = pd.read_csv(cts.BUS_STOPS_CSV)
+    bus_df = pd.read_csv(cts.BUS_STOPS_CLEANED_CSV)
     
     transformer = Transformer.from_crs(
         "EPSG:2285", 
