@@ -118,10 +118,37 @@ if __name__ == "__main__":
             fill_opacity=0.8,
             popup=folium.Popup(popup_html, max_width=250),
             tooltip=row["ON_STREET_NAME"],
-        ).add_to(bus_cluster)
+        ).add_to(bus_layer)
     
     bus_layer.add_to(m)
-    
+
+    # ------------------------------------------------------------------------
+    # ---ADD ISOCHRONES-------------------------------------------------------
+    # ------------------------------------------------------------------------
+
+    logging.info("Creating isochrone layer")
+
+    isochrone_layer = folium.FeatureGroup(
+        name=f"Coffee Shop Isochrones ({len(isochrone_data)})")
+
+    for name, entry in isochrone_data.items():
+        features = entry.get("features", [])
+        for feature in features:
+            feature.setdefault("properties", {})["name"] = name
+
+        folium.GeoJson(
+            {"type": "FeatureCollection", "features": features},
+            style_function=lambda feature: {
+                "color": feature["properties"].get("color", "#bf4040"),
+                "fillColor": feature["properties"].get("fillColor", "#bf4040"),
+                "fillOpacity": feature["properties"].get("fillOpacity", 0.33),
+                "weight": 1,
+            },
+            tooltip=folium.GeoJsonTooltip(fields=["name"], aliases=["Coffee Shop:"]),
+        ).add_to(isochrone_layer)
+
+    isochrone_layer.add_to(m)
+
     # ------------------------------------------------------------------------
     # ---ADD COFFEE SHOPS-----------------------------------------------------
     # ------------------------------------------------------------------------
