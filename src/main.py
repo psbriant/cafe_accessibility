@@ -112,9 +112,9 @@ if __name__ == "__main__":
         folium.CircleMarker(
             location=[row["lat"], row["lon"]],
             radius=4,
-            color="#1f77b4",
+            color="#FAD607",
             fill=True,
-            fill_color="#1f77b4",
+            fill_color="#FAD607",
             fill_opacity=0.8,
             popup=folium.Popup(popup_html, max_width=250),
             tooltip=row["ON_STREET_NAME"],
