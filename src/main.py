@@ -139,8 +139,8 @@ if __name__ == "__main__":
         folium.GeoJson(
             {"type": "FeatureCollection", "features": features},
             style_function=lambda feature: {
-                "color": feature["properties"].get("color", "#bf4040"),
-                "fillColor": feature["properties"].get("fillColor", "#bf4040"),
+                "color": "#4ea5e2",
+                "fillColor": "#4ea5e2",
                 "fillOpacity": feature["properties"].get("fillOpacity", 0.33),
                 "weight": 1,
             },
