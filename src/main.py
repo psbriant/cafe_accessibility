@@ -166,7 +166,7 @@ if __name__ == "__main__":
             location=[row["lat"], row["lon"]],
             popup=folium.Popup(popup_html, max_width=250),
             tooltip=row["name"],
-            icon=folium.Icon(color="darkred", icon="cutlery", prefix="fa"),
+            icon=folium.Icon(color="darkblue", icon="mug-saucer", prefix="fa"),
         ).add_to(coffee_layer)
     
     coffee_layer.add_to(m)
