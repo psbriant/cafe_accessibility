@@ -183,12 +183,12 @@ if __name__ == "__main__":
     folium.GeoJson(
         routes_gdf,
         style_function=lambda feature: {
-            "color": "#2ca02c",
+            "color": "#FAD607",
             "weight": 2.5,
             "opacity": 0.7,
         },
         highlight_function=lambda feature: {
-            "color": "#ff7f0e",
+            "color": "#060606",
             "weight": 4,
             "opacity": 1,
         },
