@@ -6,11 +6,12 @@ Seattle coffee shops, and Metro transit routes.
  
 Input datasets:
 
-1). King county metro bus stops for Seattle (coordinates in WA State Plane 
+1). King county metro bus stops for Seattle (coordinates in WA State Plane
     North, EPSG:2285, feet)
-2). Seattle coffee shops from open street maps (coordinates as WKT "POINT 
-    (lon lat)" in EPSG:4326)
-3). King County Metro bus routes, (.shx/.dbf/.prj/.cpg, line geometries, WA 
+2). Seattle coffee shops and their walking isochrones (isochrome_cafe_data.
+    json, geocoded coordinates and isochrone polygons from the Mapbox
+    Isochrone API, EPSG:4326)
+3). King County Metro bus routes, (.shx/.dbf/.prj/.cpg, line geometries, WA
     State Plane North, feet)
  
 Outputs:
@@ -18,7 +19,8 @@ Outputs:
 1). coffee_and_bus_map.html
 """
 
-import logging 
+import json
+import logging
 
 import folium
 from folium.plugins import MarkerCluster
@@ -26,7 +28,6 @@ import geopandas as gpd
 import pandas as pd
 from pyproj import Transformer
 
-from coordinate_utils import parse_point
 import constants as cts
 
 
@@ -41,7 +42,7 @@ if __name__ == "__main__":
 
     # Load bus stops and reproject from WA State Plane North (feet) to lat/lon
     logging.info("Loading bus stop data")
-    bus_df = pd.read_csv(cts.BUS_STOPS_CSV)
+    bus_df = pd.read_csv(cts.BUS_STOPS_CLEANED_CSV)
     
     transformer = Transformer.from_crs(
         "EPSG:2285", 
@@ -55,15 +56,22 @@ if __name__ == "__main__":
     bus_df["lat"] = lat
     bus_df["lon"] = lon
  
-    # Load coffee shops and parse the WKT "POINT (lon lat)" geometry column
-    logging.info("Loading coffee shop data")
-    coffee_df = pd.read_csv(cts.COFFEE_SHOPS_CSV)
- 
-    coffee_df[["lat", "lon"]] = coffee_df["geometry"].apply(
-        lambda g: pd.Series(parse_point(g))
-    )
-    coffee_df = coffee_df.dropna(subset=["lat", "lon"])
- 
+    # Load coffee shops and their walking isochrones
+    logging.info("Loading coffee shop and isochrone data")
+    with open(cts.ISOCHROME_DATA) as f:
+        isochrone_data = json.load(f)
+
+    coffee_df = pd.DataFrame([
+        {
+            "name": name,
+            "addr:city": entry["address_metadata"].get("addr_city", ""),
+            "addr:postcode": entry["address_metadata"].get("addr_postcode", ""),
+            "lat": entry["address_metadata"]["lat"],
+            "lon": entry["address_metadata"]["lon"],
+        }
+        for name, entry in isochrone_data.items()
+    ])
+
     # Load transit routes shapefile and reproject to WGS84 lat/lon
     logging.info("Loading King County Metro bus routes from shapefile")
     routes_gdf = gpd.read_file(cts.TRANSIT_ROUTES_SHP)
@@ -92,7 +100,7 @@ if __name__ == "__main__":
 
     # Bus stops layer (clustered, since there are ~2,700 of them)
     bus_layer = folium.FeatureGroup(name=f"Bus Stops ({len(bus_df)})")
-    bus_cluster = MarkerCluster().add_to(bus_layer)
+    
     
     for _, row in bus_df.iterrows():
         popup_html = (
@@ -104,16 +112,43 @@ if __name__ == "__main__":
         folium.CircleMarker(
             location=[row["lat"], row["lon"]],
             radius=4,
-            color="#1f77b4",
+            color="#FAD607",
             fill=True,
-            fill_color="#1f77b4",
+            fill_color="#FAD607",
             fill_opacity=0.8,
             popup=folium.Popup(popup_html, max_width=250),
             tooltip=row["ON_STREET_NAME"],
-        ).add_to(bus_cluster)
+        ).add_to(bus_layer)
     
     bus_layer.add_to(m)
-    
+
+    # ------------------------------------------------------------------------
+    # ---ADD ISOCHRONES-------------------------------------------------------
+    # ------------------------------------------------------------------------
+
+    logging.info("Creating isochrone layer")
+
+    isochrone_layer = folium.FeatureGroup(
+        name=f"Coffee Shop Isochrones ({len(isochrone_data)})")
+
+    for name, entry in isochrone_data.items():
+        features = entry.get("features", [])
+        for feature in features:
+            feature.setdefault("properties", {})["name"] = name
+
+        folium.GeoJson(
+            {"type": "FeatureCollection", "features": features},
+            style_function=lambda feature: {
+                "color": "#4ea5e2",
+                "fillColor": "#4ea5e2",
+                "fillOpacity": feature["properties"].get("fillOpacity", 0.33),
+                "weight": 1,
+            },
+            tooltip=folium.GeoJsonTooltip(fields=["name"], aliases=["Coffee Shop:"]),
+        ).add_to(isochrone_layer)
+
+    isochrone_layer.add_to(m)
+
     # ------------------------------------------------------------------------
     # ---ADD COFFEE SHOPS-----------------------------------------------------
     # ------------------------------------------------------------------------
@@ -123,17 +158,15 @@ if __name__ == "__main__":
     coffee_layer = folium.FeatureGroup(name=f"Coffee Shops ({len(coffee_df)})")
     
     for _, row in coffee_df.iterrows():
-        address = f"{row.get('addr:housenumber', '')} {row.get('addr:street', '')}".strip()
         popup_html = (
             f"<b>{row['name']}</b><br>"
-            f"{address}<br>"
             f"{row.get('addr:city', '')}, {row.get('addr:postcode', '')}"
         )
         folium.Marker(
             location=[row["lat"], row["lon"]],
             popup=folium.Popup(popup_html, max_width=250),
             tooltip=row["name"],
-            icon=folium.Icon(color="darkred", icon="cutlery", prefix="fa"),
+            icon=folium.Icon(color="darkblue", icon="mug-saucer", prefix="fa"),
         ).add_to(coffee_layer)
     
     coffee_layer.add_to(m)
@@ -150,12 +183,12 @@ if __name__ == "__main__":
     folium.GeoJson(
         routes_gdf,
         style_function=lambda feature: {
-            "color": "#2ca02c",
+            "color": "#FAD607",
             "weight": 2.5,
             "opacity": 0.7,
         },
         highlight_function=lambda feature: {
-            "color": "#ff7f0e",
+            "color": "#060606",
             "weight": 4,
             "opacity": 1,
         },
@@ -191,4 +224,5 @@ if __name__ == "__main__":
     logging.info(f"Map saved to {cts.OUTPUT_HTML}")
     logging.info(f"Bus stops plotted: {len(bus_df)}")
     logging.info(f"Coffee shops plotted: {len(coffee_df)}")
+    logging.info(f"Coffee shop isochrones plotted: {len(isochrone_data)}")
     logging.info(f"Transit routes plotted: {len(routes_gdf)}")

@@ -46,6 +46,10 @@ if __name__ == "__main__":
                                  'geometry']]
     coffee_shops = coffee_shops[coffee_shops['cuisine'] == 'coffee_shop']
 
+    # Drop rows that are missing values for all address columns 
+    # (These are permanently closed)
+    coffee_shops = coffee_shops.dropna(thresh=5)
+
     # ------------------------------------------------------------------------
     # ---OUTPUT DATA----------------------------------------------------------
     # ------------------------------------------------------------------------
