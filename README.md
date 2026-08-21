@@ -26,7 +26,7 @@ This will install all of the packages required to run the analysis.
 1. Activate the `conda` environment using the following command:
 
 ```
-conda activate transportation_data_analysis
+conda activate cafe_accessibility
 ```
 
 2. TBD
