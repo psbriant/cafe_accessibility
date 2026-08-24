@@ -29,14 +29,32 @@ This will install all of the packages required to run the analysis.
 conda activate cafe_accessibility
 ```
 
-2. TBD
+2. Update the variables in `constants.py`. 
+3. Run the following command to clean up the [King County Metro bus stop location data](https://gis-kingcounty.opendata.arcgis.com/datasets/kingcounty::king-county-metro-stops/explore?location=47.560985%2C-122.042655%2C9) downloaded from the King County GIS center. 
+
+```
+python get_bus_stops.py
+```
+
+4. Run the following command to pull Seattle coffee shop location data from open street maps.
+
+```
+python get_coffee_shops.py
+```
+
+5. Run the following command to pull isochrone data for Seattle coffee shops from mapbox.
+
+```
+python get_isochrones.py
+```
+
+6. Run the following command to create an interactive map, add layers for bus stops, coffee shops, transit routes and isochrones.
 
 ```
 python main.py
 ```
 
-3. Run the updated command.
-4. Check the output directory you specified and rerun the script as needed.
+7. Check the output directory you specified and rerun the script as needed.
 
 ## Contributing to this project
 
@@ -58,7 +76,7 @@ When making modifications, please create a new branch and submit a pull request 
 
 ### Running tests
 
-For any function you add, please add unit tests for any outputs and any exceptions that are raised. This project currently has a test framework that uses [pytest](https://docs.pytest.org/en/8.0.x/) as a test runner. [Github actions](https://docs.github.com/en/actions) is currently setup to run all tests when someone tries to merge a pull request and push commits. You can also run tests from the `tests` directory using the following command:
+For any function you add, please add unit tests for any outputs and any exceptions that are raised. This project currently has a test framework that uses [pytest](https://docs.pytest.org/en/8.0.x/) as a test runner. You can also run tests from the `tests` directory using the following command:
 
 ```
 pytest
