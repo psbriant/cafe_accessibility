@@ -50,8 +50,7 @@ if __name__ == "__main__":
     # 2). Remove stops that are not for Regular Service (REG)
     bus_stops = bus_stops[bus_stops['STOP_TYPE'] == 'REG']
     # 3). Filter for Seattle zipcodes
-    bus_stops = bus_stops[
-        (bus_stops["ZIPCODE"] >= 98101) & (bus_stops["ZIPCODE"] <= 98199)]
+    bus_stops = bus_stops[bus_stops['ZIPCODE'].isin(cts.SEATTLE_ZIPCODES)]
 
     logging.info("Filtering stop owners")
 
