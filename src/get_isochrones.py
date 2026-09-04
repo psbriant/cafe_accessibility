@@ -56,12 +56,18 @@ if __name__ == "__main__":
         lat = row['lat']
 
         # Construct the URL of the isochrone request.
-        url = f"https://api.mapbox.com/isochrone/v1/mapbox/walking/{lon},{lat}?contours_minutes={interval}&polygons=true&access_token={cts.TOKEN}"
+        url = f"https://api.mapbox.com/isochrone/v1/mapbox/walking/{lon},{lat}?contours_minutes=5&polygons=true&access_token={cts.TOKEN}"
 
         # Performs HTTP request and gets the response data.
         logging.info("Making request to API for isochrome data")
-        response = requests.get(url)
-        data = response.json()
+
+        try:
+            response = requests.get(url)
+            data = response.json()
+
+        except:
+            raise ValueError(
+                "There is an issue with the api request for the coffee shop {name}")
 
         # Add address metadata to json
         logging.info("Adding address metadata to json")
