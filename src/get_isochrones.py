@@ -49,7 +49,9 @@ if __name__ == "__main__":
         
         address = f"{row.get('addr:housenumber', '')} {row.get('addr:street', '')}".strip()
         addr_city = row.get('addr:city', '')
+        addr_city = None if pd.isna(addr_city) else addr_city
         addr_postcode = row.get('addr:postcode', '')
+        addr_postcode = None if pd.isna(addr_postcode) else addr_postcode
         lon = row['lon']
         lat = row['lat']
 
@@ -77,4 +79,4 @@ if __name__ == "__main__":
 
     logging.info("Outputting json")
     with open(cts.ISOCHROME_DATA, "w") as f:
-        json.dump(coffee_merged, f)
+        json.dump(coffee_merged, f, allow_nan=False)
