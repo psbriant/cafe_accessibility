@@ -11,6 +11,9 @@ import os
 load_dotenv() 
 TOKEN = os.environ["MAPBOX_TOKEN"]
 
+# Set time interval
+INTERVAL = 5
+
 # List of Seattle zipcodes
 SEATTLE_ZIPCODES = [98101, 98102, 98103, 98104, 98105, 98106, 98107, 98108, 
                     98109, 98112, 98115, 98116, 98117, 98118, 98119, 98121, 

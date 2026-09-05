@@ -20,10 +20,6 @@ logging.basicConfig(format='%(asctime)s - %(message)s',
 
 if __name__ == "__main__":
 
-
-    # Set time interval
-    interval = 5
-
     # Load coffee shops and parse the WKT "POINT (lon lat)" geometry column
     logging.info("Loading coffee shop data")
     coffee_df = pd.read_csv(cts.COFFEE_SHOPS_CSV)
@@ -56,7 +52,7 @@ if __name__ == "__main__":
         lat = row['lat']
 
         # Construct the URL of the isochrone request.
-        url = f"https://api.mapbox.com/isochrone/v1/mapbox/walking/{lon},{lat}?contours_minutes=5&polygons=true&access_token={cts.TOKEN}"
+        url = f"https://api.mapbox.com/isochrone/v1/mapbox/walking/{lon},{lat}?contours_minutes={cts.INTERVAL}&polygons=true&access_token={cts.TOKEN}"
 
         # Performs HTTP request and gets the response data.
         logging.info("Making request to API for isochrome data")
