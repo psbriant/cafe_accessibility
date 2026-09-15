@@ -1,8 +1,8 @@
-# Cafe Accessibility
+# Seattle Cafe Accessibility
 
 ## Description
 
-This project measures how walkable cafes in Seattle are from King County Metro bus stops and determines which bus stops have the most cafes near them. 
+This project measures how walkable cafes in Seattle are from King County Metro bus stops and determines which bus stops have the most cafes near them by creating an interactive web [map](https://seattle-cafe-accessibility.s3.us-west-2.amazonaws.com/index.html) using the python package [folium](https://python-visualization.github.io/folium/latest/). Cafe data was pulled from [OpenStreetMap](https://www.openstreetmap.org/#map=10/34.9141/-92.1465&layers=T) using the library [OSMnx](https://osmnx.readthedocs.io/en/stable/), location data for bus stops and transit routes was pulled from the King County GIS Center and isochrone data for each cafe was pulled from [Mapbox's isochrone api](https://docs.mapbox.com/api/navigation/isochrone/). 
  
 ## Set up
 
@@ -30,7 +30,7 @@ conda activate cafe_accessibility
 ```
 
 2. Update the variables in `constants.py`. 
-3. Run the following command to clean up the [King County Metro bus stop location data](https://gis-kingcounty.opendata.arcgis.com/datasets/kingcounty::king-county-metro-stops/explore?location=47.560985%2C-122.042655%2C9) downloaded from the King County GIS center. 
+3. Run the following command to clean up the [King County Metro bus stop location data](https://gis-kingcounty.opendata.arcgis.com/datasets/kingcounty::king-county-metro-stops/explore?location=47.560985%2C-122.042655%2C9) downloaded from the [King County GIS Center](https://kingcounty.gov/en/dept/kcit/data-information-services/gis-center). 
 
 ```
 python get_bus_stops.py
