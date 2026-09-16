@@ -129,7 +129,7 @@ if __name__ == "__main__":
     logging.info("Creating isochrone layer")
 
     isochrone_layer = folium.FeatureGroup(
-        name=f"Coffee Shop Isochrones ({len(isochrone_data)})")
+        name=f"Coffee Shop Walksheds ({len(isochrone_data)})")
 
     for name, entry in isochrone_data.items():
         features = entry.get("features", [])
