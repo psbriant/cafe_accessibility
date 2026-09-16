@@ -10,7 +10,8 @@ Input datasets:
     North, EPSG:2285, feet)
 2). Seattle coffee shops and their walking isochrones (isochrome_cafe_data.
     json, geocoded coordinates and isochrone polygons from the Mapbox
-    Isochrone API, EPSG:4326)
+    Isochrone API, EPSG:4326). These represent a 5 minute walk from a coffee 
+    shop in any direction (takes topography into consideration).
 3). King County Metro bus routes, (.shx/.dbf/.prj/.cpg, line geometries, WA
     State Plane North, feet)
  
@@ -129,7 +130,7 @@ if __name__ == "__main__":
     logging.info("Creating isochrone layer")
 
     isochrone_layer = folium.FeatureGroup(
-        name=f"Coffee Shop Walksheds ({len(isochrone_data)})")
+        name=f"5 Minute Walksheds ({len(isochrone_data)})")
 
     for name, entry in isochrone_data.items():
         features = entry.get("features", [])
